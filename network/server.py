@@ -2,6 +2,8 @@ import sys
 import socket
 import time
 
+from settings import settings
+
 
 try:
     # Create an AF_INET, STREAM socket (TCP)
@@ -10,7 +12,7 @@ except socket.error as e:
     print('Failed to create socket. Error: {}'.format(e))
     sys.exit()
 
-port = 8080
+port = settings.port
 
 try:
     # Bind to the port

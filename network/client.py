@@ -3,6 +3,8 @@
 import sys
 import socket
 
+from settings import settings
+
 try:
     # Create an AF_INET, STREAM socket (TCP)
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -14,7 +16,7 @@ print('Socket Created')
 
 # Resolve the Hostname
 
-port = 8080
+port = settings.port
 
 # Connect to the remote server
 
