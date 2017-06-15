@@ -1,0 +1,120 @@
+#:kivy 1.10.0
+#:import label kivy.uix.label
+
+<ChatLabel@Label>
+    text_size: (self.width, None)
+    halign: 'left'
+    valign: 'top'
+    size_hint: (1, None)
+    height: self.texture_size[1]
+    color: (0, 0, .75)
+
+<ScrollView>:
+    canvas.before:
+        Color:
+            rgb: .25, .25, .25
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
+<Login>
+    canvas:
+        Color:
+            rgb: (.1, .1, .1)
+        Rectangle:
+            pos: self.pos
+            size: self.size
+    BoxLayout:
+        orientation: 'vertical'
+        spacing: 20
+        padding: 20
+
+        Label:
+            size_hint: (1, .5)
+            text: 'PyCryptoChat'
+
+        GridLayout:
+            cols: 2
+            rows: 2
+            size_hint: (1, .25)
+            spacing: 20
+            padding: 20
+
+            Label:
+                text: 'Server:'
+            TextInput:
+                id: server
+                multiline: False
+                padding: [10, 0.5 * (self.height - self.line_height)]
+                text: '127.0.0.1'
+            Label:
+                text: 'User:'
+            TextInput:
+                id: user
+                multiline: False
+                padding: [10, 0.5 * (self.height - self.line_height)]
+                text: 'Kivy'
+        Button:
+            size_hint: (1, .25)
+            text: 'Connect'
+            on_release: root.connect(user.text, server.text)
+            on_release: root.manager.current = 'individual_chat'
+
+<IndividualChat>
+    canvas:
+        Color:
+            rgb: (.1, .1, .1)
+        Rectangle:
+            pos: self.pos
+            size: self.size
+    BoxLayout:
+        orientation: 'vertical'
+        spacing: 20
+        padding: 20
+
+        Button:
+            id: contact_name
+            height: 50
+            size_hint: (1, None)
+            text: 'Disconnect'
+            on_release: root.disconnect()
+            on_release: root.manager.current = 'login'
+        ScrollView:
+            size_hint: (1, 1)
+            ChatLabel:
+                id: chat_logs
+                text: ''
+        BoxLayout:
+            orientation: 'horizontal'
+            spacing: 20
+            padding: 20
+            height: 90
+            size_hint: (1, None)
+            TextInput:
+                id: message
+                multiline: False
+                focus: True
+                text: 'Hello Text'
+                on_text_validate: root.send_message(message.text)
+            Button:
+                id: send
+                size_hint: (.25, 1)
+                text: 'Send'
+                on_release: root.send_message(message.text)
+
+<Manager>:
+    id: screen_manager
+
+    screen_one: login
+    screen_two: individual_chat
+
+    Login:
+        id: login
+        name: 'login'
+        manager: screen_manager
+
+    IndividualChat:
+        id: individual_chat
+        name: 'individual_chat'
+        manager: screen_manager
+
